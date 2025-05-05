@@ -1,44 +1,40 @@
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Listing from './pages/Listing'
+import Home from './pages/Home'
+import Update from './pages/Update'
+import Delete from './pages/ConfirmDelete'
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import PrivateRoute from './components/PrivateRoute';
+import { AuthProvider } from './components/AuthContext';
+import { useAuth } from './components/AuthContext';
+import Login from './pages/Login';
 
 function App() {
-  const [tarefas, setTarefas] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:5000/tarefas')
-    .then(response => setTarefas(response.data))
-    .catch(error => console.error(error)
-    )}, []);
-
   return (
-    <div className="App">
-      <p></p>
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <td>Id</td>
-            <td>Descrição</td>
-            <td>Data de Criação</td>
-            <td>Data Prevista</td>
-            <td>Data Encerramento</td>
-            <td>Situação</td>
-          </tr>
-          {tarefas.map((tarefas) => (
-            <tr>
-              <td>{tarefas.id}</td>
-              <td>{tarefas.descricao}</td>
-              <td>{tarefas.data_criacao}</td>
-              <td>{tarefas.data_prevista}</td>
-              <td>{tarefas.data_encerramento}</td>
-              <td>{tarefas.situacao}</td>
-            </tr>
-          ))}
-        </thead>
-      </table>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Navbar bg="dark" data-bs-theme="dark">
+          <Container>
+            <Nav className='me-auto mx-auto'>
+              <Nav.Link href="/">Home</Nav.Link> | <Nav.Link href="/list">Listing</Nav.Link> | <Nav.Link href="/register">Register</Nav.Link> |
+            </Nav>
+          </Container>
+        </Navbar>
+
+        <Routes>
+          <Route path="/" element={<PrivateRoute> <Home /> </PrivateRoute>}></Route>
+          <Route path="/register" element={<PrivateRoute> <Update /></PrivateRoute>} />
+          <Route path="/list" element={<PrivateRoute> <Listing /></PrivateRoute>} />
+          <Route path="/update/:id" element={<PrivateRoute> <Update /></PrivateRoute>} />
+          <Route path="/delete/:id" element={<PrivateRoute> <Delete /></PrivateRoute>} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
