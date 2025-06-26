@@ -2,6 +2,20 @@ require('dotenv').config();
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const os = require('os');
+
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return 'localhost';
+}
+process.env.DB_HOST = getLocalIP();
 
 const app = express();
 const port = 5000; // Porta 
@@ -151,12 +165,11 @@ app.post('/send-email', async (req, res) => {
   const { to, subject, text } = req.body;
 
   try {
-    // Configuração do transporte (use suas credenciais de e-mail)
     const transporter = nodemailer.createTransport({
-      service: 'gmail', // ou outro serviço de e-mail
+      service: 'gmail', 
       auth: {
-        user: process.env.EMAIL_USER, // Seu e-mail
-        pass: process.env.EMAIL_PASS, // Sua senha ou App Password
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
@@ -180,4 +193,4 @@ app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
 
-module.exports = app; 
+module.exports = app;

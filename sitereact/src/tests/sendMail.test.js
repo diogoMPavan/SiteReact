@@ -1,12 +1,11 @@
-import { sendEmail } from '../utils/sendMail';
-global.alert = jest.fn(); // Mock para o alert
+const { sendEmail } = require('../utils/sendMail');
+const axios = require('axios');
 
-test('Send email successfully', async () => {
-    const to = 'diogo.pavan@universo.univates.br';
-    const subject = 'Test Subject';
-    const text = 'Test email body';
+jest.mock('axios');
+global.alert = jest.fn();
 
-    await sendEmail(to, subject, text);
-
-    expect(global.alert).toHaveBeenCalledWith('E-mail enviado com sucesso!');
+test('Envia e-mail com sucesso', async () => {
+  axios.post.mockResolvedValueOnce({ data: { message: 'E-mail enviado com sucesso!' } });
+  await sendEmail('diogo.pavan@universo.univates.br', 'Assunto', 'Corpo');
+  expect(global.alert).toHaveBeenCalledWith('E-mail enviado com sucesso!');
 });

@@ -1,19 +1,14 @@
-import axios from 'axios';
+const axios = require('axios');
 
 /**
  * @param {string} to 
  * @param {string} subject
  * @param {string} text 
- * @returns {Promise<void>} - Retorna uma promessa que resolve quando o e-mail for enviado.
+ * @returns {Promise<void>}
  */
-export const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, text) => {
   try {
-    const emailData = {
-      to,
-      subject,
-      text,
-    };
-
+    const emailData = { to, subject, text };
     const response = await axios.post('http://localhost:5000/send-email', emailData);
     alert(response.data.message);
   } catch (error) {
@@ -21,3 +16,5 @@ export const sendEmail = async (to, subject, text) => {
     alert('Erro ao enviar e-mail');
   }
 };
+
+module.exports = { sendEmail };
