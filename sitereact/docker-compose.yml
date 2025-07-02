@@ -36,12 +36,14 @@ services:
       - "3000:3000"
     depends_on:
       - backend
-flyway:
+
+  flyway:
     image: flyway/flyway:10
     depends_on:
       - db
     command: -url=jdbc:postgresql://db:5432/SiteFabricio -user=postgres -password=postgres -connectRetries=60 migrate
     volumes:
       - ./db/migrations:/flyway/sql
+
 volumes:
   db_data:
