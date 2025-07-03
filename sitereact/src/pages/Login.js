@@ -5,7 +5,7 @@ import { useAuth } from '../components/AuthContext';
 
 function Login() {
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const { login } = useAuth(); // Importa a função login do contexto
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,11 +17,14 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/login', formData);
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/login`,
+        formData
+      );
       alert(response.data.message);
-      login(); // Atualiza o estado de autenticação
-      localStorage.setItem('username', formData.username); // Armazena o nome de usuário no localStorage
-      navigate('/'); // Redireciona para a página de listagem
+      login();
+      localStorage.setItem('username', formData.username);
+      navigate('/');
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       alert(error.response?.data?.message || 'Erro ao fazer login');

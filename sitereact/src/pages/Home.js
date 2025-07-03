@@ -9,7 +9,7 @@ function Home(){
     const [tarefas, setTarefas] = useState([]);
 
     useEffect(() => {
-      axios.get('http://localhost:5000/tarefas')
+      axios.get(`${process.env.REACT_APP_API_URL}/tarefas`)
       .then(response => setTarefas(response.data))
       .catch(error => console.error(error)
       )}, []);

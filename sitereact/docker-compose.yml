@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - "${DB_PORT_HOST:-5432}:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
@@ -27,13 +27,14 @@ services:
     depends_on:
       - db
     ports:
-      - "5000:5000"
+      - "${BACKEND_PORT_HOST:-5000}:5000"
+    command: sh -c "npx wait-port db:5432 && sleep 10 && node server.js"
 
   frontend:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT_HOST:-3000}:3000"
     depends_on:
       - backend
 

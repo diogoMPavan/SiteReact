@@ -8,7 +8,7 @@ function ConfirmDelete() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/tarefas/${id}`); // Chama a API de exclusão
+      await axios.delete(`${process.env.REACT_APP_API_URL}/tarefas/${id}`); // Chama a API de exclusão
       alert('Tarefa deletada com sucesso!');
       navigate('/list'); // Redireciona para a tela de listagem
     } catch (error) {
