@@ -39,3 +39,7 @@ frontend/coverage/
 db_data/
 docker-compose.override.yml
 docker-compose.*.yml
+
+# Jenkins
+Jenkinsfile
+jenkins-config/
