@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { formatDate } from '../utils/formatDate';
 import { sendEmail } from '../utils/sendMail';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function Update() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ function Update() {
     useEffect(() => {
         // Busca os dados da tarefa pelo ID
         if (id) {
-            axios.get(`http://localhost:5000/tarefas/${id}`)
+            axios.get(`${API_URL}/tarefas/${id}`)
                 .then(response => setTarefa(response.data))
                 .catch(error => console.error('Erro ao buscar tarefa:', error));
         }
@@ -50,7 +52,7 @@ function Update() {
 
         if (id) {
             // update
-            axios.put(`http://localhost:5000/tarefas/${id}`, tarefaAtualizada)
+            axios.put(`${API_URL}/tarefas/${id}`, tarefaAtualizada)
                 .then(() => {
                     alert('Tarefa atualizada com sucesso!');
                     sendTaskEmail(tarefaAtualizada); // Envia o e-mail
@@ -59,7 +61,7 @@ function Update() {
                 .catch(error => console.error('Erro ao atualizar tarefa:', error));
         } else {
             //insert
-            axios.post('http://localhost:5000/tarefas', tarefaAtualizada)
+            axios.post(`${API_URL}/tarefas`, tarefaAtualizada)
                 .then(() => {
                     alert('Tarefa criada com sucesso!');
                     sendTaskEmail(tarefaAtualizada); // Envia o e-mail
@@ -73,7 +75,7 @@ function Update() {
     const sendTaskEmail = async (tarefa) => {
         try {
             const user = localStorage.getItem('username');
-            const response = await axios.get(`http://localhost:5000/user/${user}`);
+            const response = await axios.get(`${API_URL}/user/${user}`);
             const email = response.data.email; // Acessa o e-mail retornado pelo backend
 
             const to = email;
@@ -82,7 +84,6 @@ function Update() {
 
             await sendEmail(to, subject, text);
 
-            // Envia o e-mail
         } catch (error) {
             console.error('Erro ao enviar e-mail:', error);
             alert('Erro ao enviar e-mail');
