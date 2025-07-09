@@ -16,7 +16,7 @@ function Home(){
 
     return (
         <div className="container my-5 text-center">
-          <h2 className="mb-4">Bem-vindo ao Gerenciador de Tarefas</h2>
+          <h2 className="mb-4">Bem-vindo ao Gerenciador</h2>
           <p className="lead">Acompanhe suas tarefas de forma simples e visual</p>
     
           <div id="tarefasCarousel" className="carousel slide mt-5 w-75 mx-auto" data-bs-ride="carousel">
