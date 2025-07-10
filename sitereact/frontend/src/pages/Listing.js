@@ -35,7 +35,7 @@ function Listing() {
 
     return (
         <div className="container my-5">
-            <h2 className="mb-4 text-center">Lista de Tarefas</h2>
+            <h2 className="mb-4 text-center">Lista de Tarefas Final</h2>
 
             <div className="mb-3 d-flex justify-content-between">
                 <input
